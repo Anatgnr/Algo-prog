@@ -1,0 +1,33 @@
+  if(heap_empty(h)){return NULL;}// le tas est vide pas de suppression
+  if(h->n == 1)//si il reste une valeur, on la supprime
+  {
+    // free(h->array[h->n]);
+    h->n --;
+    return NULL;
+  }
+  //swap de la valeur a supprimer avec la derniere feuille
+  void* tmp;
+  tmp = h->array[1];
+  h->array[1] = h->array[h->nmax];
+  h->array[h->nmax] = tmp;
+  //supression de la valeur
+  // free(h->array[h->nmax]);
+  h->array = realloc(h->array, (h->nmax - 1) * sizeof(void *));
+  //reajustement des variables de stockage
+  h->n --;
+  h->nmax --;
+  //reequilibrage du tas
+  int cursor = 1;
+  bool is_heap = false;
+  while(!is_heap)
+  {
+    if(h->array[cursor] > h->array[cursor * 2])
+      SWAP(h->array[cursor], h->array[cursor * 2],tmp);
+    else if(h->array[cursor] > h->array[(cursor * 2) +1])
+      SWAP(h->array[cursor], h->array[(cursor * 2) +1],tmp);
+    else
+      is_heap = true;
+    cursor *= 2;
+  }
+
+  return h->array[1];
